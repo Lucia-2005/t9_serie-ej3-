@@ -224,12 +224,30 @@ public class App {
 		btnBorrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				Serie serieDel=new Serie();
+				int id=Integer.parseInt(txtID.getText());
 				
+				//encontrar el objeto especifico 
+				serieDel=serieDAO.selectSerieById(id);
+				
+				//Eliminar la fila de la base de datos
+				serieDAO.deleteSerie(id);
+				
+				//actualizar la tabla instantaneamente
+				modelo.setRowCount(0);
+				List<Serie> series=serieDAO.selectAllSerie();
+				for(Serie se:series) {
+					Object[]fila= {se.getIdserie(), se.getNombre(), se.getTemporadas(), se.getCapitulos()};
+					modelo.addRow(fila);
+				}
+				txtID.setText("");
+				txtNom.setText("");
+				txtTemp.setText("");
+				txtCap.setText("");
 			}
 		});
 		btnBorrar.setBounds(331, 316, 90, 25);
 		frmCrud.getContentPane().add(btnBorrar);
-		
 		
 	}
 }
